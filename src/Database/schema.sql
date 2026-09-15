@@ -8,7 +8,7 @@ CREATE TABLE Usuario (
     Gamertag VARCHAR(50) NOT NULL UNIQUE,
     Correo VARCHAR(50) NOT NULL,
     FechaRegistro DATETIME DEFAULT CURRENT_TIMESTAMP,
-    /* 0 = false para jugador, 1 = true para administrador*/
+    /* 0 = false para jugador, 1 = true para administrador */
     IsAdmin BOOLEAN NOT NULL DEFAULT 0
 );
 
