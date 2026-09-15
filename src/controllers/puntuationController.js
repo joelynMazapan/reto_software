@@ -1,6 +1,6 @@
 const db = require('../config/database');
 
-const createPuntuacion = async (req, res) => {
+const createPuntuation = async (req, res) => {
     try {
         const { fkUsuario, fkVideoJuego, puntos } = req.body;
 
@@ -48,4 +48,4 @@ const createPuntuacion = async (req, res) => {
     }
 };
 
-module.exports = { createPuntuacion };
+module.exports = { createPuntuation };
