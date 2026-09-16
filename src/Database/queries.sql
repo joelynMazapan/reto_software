@@ -1,7 +1,7 @@
 USE TorneoVideoJuego;
 
 -- Registrar jugador (Error de Gamertag duplicado)
-INSERT INTO Usuario (Nombre, Gamertag, Correo)
+INSERT INTO Jugador (Nombre, Gamertag, Correo)
 VALUES (?, ?, ?);
  
 
@@ -14,13 +14,13 @@ SELECT
     Gamertag,
     Correo,
     FechaRegistro
-FROM Usuario;
+FROM Jugador;
 
 
 -- Registrar puntuación (Valida que el jugador y el videojuego existan)
-SELECT idUsuario FROM Usuario WHERE idUsuario = ?;
+SELECT idJugador FROM Jugador WHERE idJugador = ?;
 SELECT idVideoJuego FROM VideoJuego WHERE idVideoJuego = ?;
-INSERT INTO Puntuacion (fkUsuario, fkVideoJuego, Puntuacion)
+INSERT INTO Puntuacion (fkJugador, fkVideoJuego, Puntuacion)
 VALUES (?, ?, ?);
 
 
@@ -30,19 +30,19 @@ SELECT
     v.Nombre AS VIDEOJUEGO,
     p.Puntuacion AS PUNTUACIÓN
 FROM Puntuacion p
-    JOIN Usuario u ON p.fkUsuario = u.idUsuario
+    JOIN Jugador u ON p.fkJugador = u.idJugador
     JOIN VideoJuego v ON p.fkVideoJuego = v.idVideoJuego
 ORDER BY p.Puntuacion DESC;
 
 
 -- Búsqueda de jugador por 'Nombre' o 'Gamertag' y buscar coincidencias
 SELECT
-    idUsuario,
+    idJugador,
     Nombre,
     Gamertag,
     Correo,
     FechaRegistro
-FROM Usuario
+FROM Jugador
 WHERE
     Nombre LIKE ?
     OR Gamertag LIKE ?;
@@ -53,7 +53,7 @@ DELIMITER //
 CREATE PROCEDURE ObtenerEstadisticas()
 BEGIN
     SELECT
-        (SELECT COUNT(*) FROM Usuario) AS TotalJugadores,
+        (SELECT COUNT(*) FROM Jugador) AS TotalJugadores,
         (SELECT COUNT(*) FROM VideoJuego) AS TotalVideojuegos,
         (SELECT COUNT(*) FROM Puntuacion) AS TotalPuntuaciones,
         (SELECT AVG(Puntuacion) FROM Puntuacion) AS PuntuacionPromedio;
