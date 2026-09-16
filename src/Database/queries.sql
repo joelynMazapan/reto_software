@@ -1,5 +1,14 @@
 USE TorneoVideoJuego;
 
+-- Registrar jugador (Error de Gamertag duplicado)
+INSERT INTO Usuario (Nombre, Gamertag, Correo)
+VALUES (?, ?, ?);
+ 
+
+-- Registrar videojuego (Error de nombre duplicado)
+INSERT INTO VideoJuego (Nombre, Genero)
+VALUES (?, ?);
+
 -- Consulta de jugadores
 SELECT
     Gamertag,
@@ -7,17 +16,12 @@ SELECT
     FechaRegistro
 FROM Usuario;
 
--- Búsqueda de jugador por 'Nombre' o 'Gamertag' y buscar coincidencias
-SELECT
-    idUsuario,
-    Nombre,
-    Gamertag,
-    Correo,
-    FechaRegistro
-FROM Usuario
-WHERE
-    Nombre LIKE '%ejemplo%'
-    OR Gamertag LIKE '%ejemplo%';
+
+-- Registrar puntuación (Valida que el jugador y el videojuego existan)
+SELECT idUsuario FROM Usuario WHERE idUsuario = ?;
+SELECT idVideoJuego FROM VideoJuego WHERE idVideoJuego = ?;
+INSERT INTO Puntuacion (fkUsuario, fkVideoJuego, Puntuacion)
+VALUES (?, ?, ?);
 
 
 -- Clasificación por puntuación de mayor a menor
@@ -29,6 +33,20 @@ FROM Puntuacion p
     JOIN Usuario u ON p.fkUsuario = u.idUsuario
     JOIN VideoJuego v ON p.fkVideoJuego = v.idVideoJuego
 ORDER BY p.Puntuacion DESC;
+
+
+-- Búsqueda de jugador por 'Nombre' o 'Gamertag' y buscar coincidencias
+SELECT
+    idUsuario,
+    Nombre,
+    Gamertag,
+    Correo,
+    FechaRegistro
+FROM Usuario
+WHERE
+    Nombre LIKE ?
+    OR Gamertag LIKE ?;
+
 
 -- Obtención de estadísticas
 DELIMITER //
