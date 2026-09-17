@@ -47,4 +47,38 @@ const getPlayers = async (req, res ) => {
     }
 };
 
-module.exports = { createPlayer, getPlayers };
+const searchPlayers = async (req, res) => {
+    try {
+        const { q } = req.query;
+
+        if (!q) {
+            return res.status(400).json({ 
+                msg: 'Debes proporcionar un término de búsqueda (ej: ?q=texto).' 
+            });
+        }
+
+        const searchTerm = `%${q}%`;
+
+        const query = `
+            SELECT 
+                idJugador,
+                Nombre,
+                GamerTag,
+                Correo,
+                FechaRegistro
+            FROM Jugador
+            WHERE 
+                Nombre LIKE ?
+                OR GamerTag LIKE ?;
+        `;
+
+        const [players] = await db.query(query, [searchTerm, searchTerm]);
+
+        res.json(players);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al buscar jugadores' });
+    }
+};
+
+module.exports = { createPlayer, getPlayers, searchPlayers };
