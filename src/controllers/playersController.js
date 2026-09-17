@@ -111,4 +111,63 @@ const getPlayerById = async (req, res) => {
     }
 };
 
-module.exports = { createPlayer, getPlayers, searchPlayers, getPlayerById };
+const updatePlayer = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const { nombre, gamerTag, correo } = req.body;
+
+        if (!nombre || !gamerTag || !correo) {
+            return res.status(400).json({ 
+                msg: 'Los campos nombre, gamerTag y correo son obligatorios para actualizar.' 
+            });
+        }
+
+        const query = `
+            UPDATE Jugador 
+            SET Nombre = ?, Gamertag = ?, Correo = ? 
+            WHERE idJugador = ?
+        `;
+        
+        const [result] = await db.query(query, [nombre, gamerTag, correo, id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ msg: 'Jugador no encontrado o no existe.' });
+        }
+
+        res.json({ 
+            msg: 'Jugador actualizado exitosamente',
+            idJugador: id
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Fallo al actualizar el jugador' });
+    }
+};
+
+const deletePlayer = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const [result] = await db.query('DELETE FROM Jugador WHERE idJugador = ?', [id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ msg: 'Jugador no encontrado.' });
+        }
+
+        res.json({ msg: 'Jugador eliminado exitosamente' });
+
+    } catch (error) {
+        console.error(error);
+        
+        if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+            return res.status(400).json({ 
+                error: 'No se puede eliminar este jugador porque tiene puntuaciones registradas en el sistema.' 
+            });
+        }
+
+        res.status(500).json({ error: 'Fallo al eliminar el jugador' });
+    }
+};
+module.exports = { createPlayer, getPlayers, searchPlayers, getPlayerById , updatePlayer , deletePlayer};
