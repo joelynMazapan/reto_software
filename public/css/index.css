@@ -64,20 +64,6 @@ body {
     margin-bottom: 30px;
 }
 
-.registro-header h2 {
-    font-size: 1.6rem;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    color: var(--text-color);
-    text-transform: uppercase;
-}
-
-.registro-header h2 span {
-    background: linear-gradient(135deg, var(--primary-light), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
 form {
     display: flex;
     flex-direction: column;

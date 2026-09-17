@@ -4,18 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registros - Sistema de Torneos</title>
+
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/registros.css">
+
 </head>
 <body>
 
     <nav class="cyber-navbar">
-        <a href="dashboard.html" class="navbar-brand">Torneo<span>X</span></a>
+        <a href="../index.html" class="navbar-brand">Torneo<span>X</span></a>
         
         <ul class="navbar-links">
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="registros.html" class="active">Registros</a></li>
+            <li><a href="../index.html">Dashboard</a></li>
+            <li><a href="jugadores.html">Jugadores</a></li>
+            <li><a href="registros.html" class="active">Videojuegos</a></li>
             <li><a href="ranking.html">Clasificación</a></li>
         </ul>
 
@@ -23,71 +26,81 @@
             <input type="text" id="inputBuscarJugador" placeholder="Buscar jugador..." autocomplete="off">
             <div id="searchResultsDropdown" class="search-dropdown" style="display: none;"></div>
         </div>
-
-        <button id="btnCerrarSesion" class="btn-logout">Salir</button>
     </nav>
 
     <div class="registro-container registros-container">
-        <div class="registros-header">
-            <h2>PANEL DE <span>REGISTROS</span></h2>
-            <p>Dar de alta nuevos videojuegos y registrar puntuaciones en el sistema</p>
+        <div class="registros-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <div>
+                <h2>PANEL DE <span>VIDEOJUEGOS</span></h2>
+            </div>
+            <button id="btnAbrirModalVideojuego" class="btn-cyber" style="padding: 10px 18px; width: auto; 
+            cursor: pointer;">+ Nuevo Videojuego</button>
         </div>
 
-        <div class="forms-grid">
+        <div class="leaderboard-card" style="background: rgba(15, 23, 42, 0.6); 
+        border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; padding: 20px; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <table class="cyber-table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 1px solid rgba(56, 189, 248, 0.3); text-align: left;">
+                        <th style="padding: 12px; color: #38bdf8;">ID</th>
+                        <th style="padding: 12px; color: #38bdf8;">Videojuego</th>
+                        <th style="padding: 12px; color: #38bdf8;">Género</th>
+                    </tr>
+                </thead>
+                <tbody id="videojuegosTableBody">
+                    <tr>
+                        <td colspan="3" class="empty-state" style="text-align: center; padding: 20px; 
+                        color: #94a3b8;">Cargando catálogo de videojuegos...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="modalVideojuego" class="cyber-modal">
+        <div class="cyber-modal-content">
+            <button id="btnCerrarModalVideojuego" class="modal-close">&times;</button>
+            <h3 style="margin-bottom: 15px; color: #fff;">Registrar Nuevo Videojuego</h3>
             
-            <div class="form-card">
-                <div>
-                    <h3 style="margin-bottom: 15px;">Nuevo Videojuego</h3>
-                    <form id="formVideojuego">
-                        <div class="form-group" style="margin-bottom: 12px;">
-                            <label for="nombreVideojuego">Nombre del Videojuego</label>
-                            <input type="text" id="nombreVideojuego" name="nombre" required>
-                        </div>
-                        <div class="form-group" style="margin-bottom: 12px;">
-                            <label for="generoVideojuego">Género</label>
-                            <input type="text" id="generoVideojuego" name="genero" required>
-                        </div>
-
-                        <div id="mensajeVideojuego" class="form-message" style="display: none;"></div>
-                    </form>
+            <form id="formVideojuego">
+                <div class="modal-form-group" style="margin-bottom: 12px;">
+                    <label for="nombreVideojuego" style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; text-transform: uppercase;">Nombre del Videojuego</label>
+                    <input type="text" id="nombreVideojuego" name="nombre" required placeholder="Ej. Cyberpunk 2077" style="width: 100%; padding: 10px; background: rgba(30, 41, 59, 0.7); border: 1px solid #475569; border-radius: 8px; color: #fff; box-sizing: border-box;">
                 </div>
-                <button type="submit" form="formVideojuego" class="btn-cyber">Registrar Videojuego</button>
-            </div>
 
-            <div class="form-card">
-                <div>
-                    <h3 style="margin-bottom: 15px;">Nueva Puntuación</h3>
-                    <form id="formPuntuacion">
-                        <div class="selects-row-grid" style="margin-bottom: 10px;">
-                            <div class="form-group" style="margin-bottom: 0;">
-                                <label for="selectJugador">Jugador</label>
-                                <select id="selectJugador" name="jugador_id" required>
-                                    <option value="" disabled selected>Seleccione...</option>
-                                </select>
-                            </div>
-                            <div class="form-group" style="margin-bottom: 0;">
-                                <label for="selectVideojuego">Videojuego</label>
-                                <select id="selectVideojuego" name="videojuego_id" required>
-                                    <option value="" disabled selected>Seleccione...</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group" style="margin-bottom: 10px;">
-                            <label for="valorPuntuacion">Puntuación</label>
-                            <input type="number" id="valorPuntuacion" name="puntuacion" min="0" required>
-                        </div>
-
-                        <div id="mensajePuntuacion" class="form-message" style="display: none;"></div>
-                    </form>
+                <div class="modal-form-group" style="margin-bottom: 15px;">
+                    <label for="generoVideojuego" style="display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 5px; text-transform: uppercase;">Género</label>
+                    <input type="text" id="generoVideojuego" name="genero" required placeholder="Ej. RPG de Acción" style="width: 100%; padding: 10px; background: rgba(30, 41, 59, 0.7); border: 1px solid #475569; border-radius: 8px; color: #fff; box-sizing: border-box;">
                 </div>
-                <button type="submit" form="formPuntuacion" class="btn-cyber">Guardar Puntuación</button>
-            </div>
 
+                <div id="mensajeVideojuego" class="form-message" style="display: none; margin-bottom: 10px; font-size: 0.85rem;"></div>
+
+                <button type="submit" class="btn-cyber" style="width: 100%; padding: 12px; margin-top: 5px; cursor: pointer;">Guardar Videojuego</button>
+            </form>
         </div>
     </div>
 
     <script src="../js/main.js"></script>
     <script src="../js/registros.js"></script>
+    <script>
+        const modalVid = document.getElementById('modalVideojuego');
+        const btnAbrirVid = document.getElementById('btnAbrirModalVideojuego');
+        const btnCerrarVid = document.getElementById('btnCerrarModalVideojuego');
+
+        btnAbrirVid.addEventListener('click', () => {
+            modalVid.style.display = 'flex';
+        });
+
+        btnCerrarVid.addEventListener('click', () => {
+            modalVid.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modalVid) {
+                modalVid.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>

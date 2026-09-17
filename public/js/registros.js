@@ -1,83 +1,91 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    // 1. Cargar datos en los select al abrir la vista de registros
-    try {
-        const [resJ, resV] = await Promise.all([
-            fetch(`${API_URL}/jugadores`),
-            fetch(`${API_URL}/videojuegos`)
-        ]);
+    
+    const tablaVideojuegosBody = document.getElementById("videojuegosTableBody");
+    const formVideojuego = document.getElementById("formVideojuego");
+    const modalVideojuego = document.getElementById("modalVideojuego");
+    const mensajeVideojuego = document.getElementById("mensajeVideojuego");
 
-        const jugadores = await resJ.json();
-        const videojuegos = await resV.json();
-
-        const selectJugador = document.getElementById("selectJugador");
-        const selectVideojuego = document.getElementById("selectVideojuego");
-
-        if (selectJugador) {
-            jugadores.forEach(j => {
-                selectJugador.innerHTML += `<option value="${j.idJugador}">${j.Gamertag} (${j.Nombre})</option>`;
-            });
-        }
-
-        if (selectVideojuego) {
-            videojuegos.forEach(v => {
-                selectVideojuego.innerHTML += `<option value="${v.idVideojuego}">${v.Nombre}</option>`;
-            });
-        }
-    } catch (error) {
-        console.log("Servidor backend no disponible para poblar selects todavía.");
+    function mostrarMensaje(texto, tipo) {
+        if (!mensajeVideojuego) return;
+        mensajeVideojuego.style.display = "block";
+        mensajeVideojuego.textContent = texto;
+        mensajeVideojuego.style.color = tipo === "error" ? "#f87171" : "#4ade80";
+        mensajeVideojuego.style.backgroundColor = tipo === "error" ? "rgba(248, 113, 113, 0.1)" : "rgba(74, 222, 128, 0.1)";
+        mensajeVideojuego.style.padding = "8px 12px";
+        mensajeVideojuego.style.borderRadius = "6px";
+        mensajeVideojuego.style.border = `1px solid ${tipo === "error" ? "rgba(248, 113, 113, 0.3)" : "rgba(74, 222, 128, 0.3)"}`;
     }
 
-    // 2. Manejar envío del formulario de Videojuegos
-    const formVideojuego = document.getElementById("formVideojuego");
+    async function cargarVideojuegos() {
+        if (!tablaVideojuegosBody) return;
+
+        try {
+            const res = await fetch(`${API_URL}/videojuegos`);
+            if (!res.ok) throw new Error("No se pudo obtener el catálogo de videojuegos");
+
+            const videojuegos = await res.json();
+            tablaVideojuegosBody.innerHTML = "";
+
+            if (videojuegos.length === 0) {
+                tablaVideojuegosBody.innerHTML = `<tr><td colspan="3" class="empty-state" style="text-align: center; padding: 20px; color: #94a3b8;">No hay videojuegos registrados en el sistema.</td></tr>`;
+                return;
+            }
+
+            videojuegos.forEach(v => {
+                const fila = document.createElement("tr");
+                fila.style.borderBottom = "1px solid rgba(56, 189, 248, 0.1)";
+                fila.innerHTML = `
+                    <td style="padding: 12px; color: #cbd5e1;">#${v.idVideojuego}</td>
+                    <td style="padding: 12px; color: #fff; font-weight: 500;">${v.Nombre}</td>
+                    <td style="padding: 12px; color: #38bdf8;">${v.Genero}</td>
+                `;
+                tablaVideojuegosBody.appendChild(fila);
+            });
+        } catch (error) {
+            console.error("Error al cargar videojuegos:", error);
+            tablaVideojuegosBody.innerHTML = `<tr><td colspan="3" class="empty-state" style="text-align: center; padding: 20px; color: #f87171;">Sin conexión al servidor</td></tr>`;
+        }
+    }
+
+    cargarVideojuegos();
+
     if (formVideojuego) {
         formVideojuego.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const nombre = document.getElementById("nombreVideojuego").value;
-            const genero = document.getElementById("generoVideojuego").value;
+            const nombreInput = document.getElementById("nombreVideojuego").value.trim();
+            const generoInput = document.getElementById("generoVideojuego").value.trim();
+
+            if (!nombreInput || !generoInput) {
+                mostrarMensaje("Por favor, completa todos los campos.", "error");
+                return;
+            }
 
             try {
                 const res = await fetch(`${API_URL}/videojuegos`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ nombre, genero })
+                    body: JSON.stringify({ nombre: nombreInput, genero: generoInput })
                 });
 
                 if (res.ok) {
-                    alert("Videojuego registrado con éxito");
+                    mostrarMensaje("¡Videojuego registrado con éxito!", "exito");
                     formVideojuego.reset();
+                    
+                    await cargarVideojuegos();
+
+                    setTimeout(() => {
+                        if (modalVideojuego) {
+                            modalVideojuego.style.display = "none";
+                            mensajeVideojuego.style.display = "none";
+                        }
+                    }, 1200);
+
                 } else {
-                    alert("Error: Verifique que el videojuego no esté duplicado.");
+                    mostrarMensaje("Error: El videojuego ya existe o los datos son inválidos.", "error");
                 }
             } catch (err) {
                 console.error("Error de red:", err);
-            }
-        });
-    }
-
-    // 3. Manejar envío del formulario de Puntuaciones
-    const formPuntuacion = document.getElementById("formPuntuacion");
-    if (formPuntuacion) {
-        formPuntuacion.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const jugador_id = document.getElementById("selectJugador").value;
-            const videojuego_id = document.getElementById("selectVideojuego").value;
-            const puntuacion = document.getElementById("valorPuntuacion").value;
-
-            try {
-                const res = await fetch(`${API_URL}/puntuaciones`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ jugador_id, videojuego_id, puntuacion })
-                });
-
-                if (res.ok) {
-                    alert("Puntuación guardada correctamente");
-                    formPuntuacion.reset();
-                } else {
-                    alert("Error: La puntuación no puede ser negativa y los datos deben existir.");
-                }
-            } catch (err) {
-                console.error("Error de red:", err);
+                mostrarMensaje("Error de conexión con el servidor.", "error");
             }
         });
     }

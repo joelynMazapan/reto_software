@@ -56,7 +56,6 @@
     text-shadow: 0 0 10px rgba(76, 201, 240, 0.4);
 }
 
-/* Barra de búsqueda integrada */
 .navbar-search {
     position: relative;
     display: flex;
@@ -81,7 +80,6 @@
     box-shadow: 0 0 10px rgba(76, 201, 240, 0.2);
 }
 
-/* Botón de Cerrar Sesión (Salir) */
 .btn-logout {
     background: rgba(255, 107, 107, 0.1);
     border: 1px solid rgba(255, 107, 107, 0.3);
@@ -102,7 +100,6 @@
     box-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
 }
 
-/* Responsivo para pantallas pequeñas */
 @media (max-width: 900px) {
     .cyber-navbar {
         flex-direction: column;
