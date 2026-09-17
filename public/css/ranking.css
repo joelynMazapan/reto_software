@@ -190,3 +190,188 @@
     border-color: #38bdf8;
     box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
 }
+
+.ranking-container {
+    width: 100%;
+    max-width: 950px;
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.ranking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--input-border);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.ranking-title h2 {
+    font-size: 1.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.ranking-title p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+.leaderboard-card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.cyber-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.cyber-table th {
+    background: rgba(20, 30, 55, 0.8);
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--input-border);
+}
+
+.cyber-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+}
+
+.cyber-table tr:last-child td {
+    border-bottom: none;
+}
+
+.cyber-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.cyber-table tbody tr:hover {
+    background: rgba(76, 201, 240, 0.05);
+}
+
+.rank-pos {
+    font-weight: 900;
+    font-size: 1.1rem;
+}
+
+.score-badge {
+    font-weight: 800;
+    color: var(--accent);
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 30px !important;
+    font-style: italic;
+}
+
+.btn-abrir-modal {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-abrir-modal:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    transform: translateY(-1px);
+}
+
+/* --- ESTILOS DE LA VENTANA EMERGENTE (MODAL) --- */
+.cyber-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 15, 30, 0.8);
+    backdrop-filter: blur(6px);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+}
+
+.cyber-modal-content {
+    background: #0f172a;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    border-radius: 14px;
+    padding: 30px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    position: relative;
+    box-sizing: border-box;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #38bdf8;
+}
+
+.modal-form-group {
+    margin-bottom: 15px;
+}
+
+.modal-form-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: #cbd5e1;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.modal-form-group select,
+.modal-form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid #475569;
+    border-radius: 8px;
+    color: #fff;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.modal-form-group select:focus,
+.modal-form-group input:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}

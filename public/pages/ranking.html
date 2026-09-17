@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/ranking.css">
-    
 </head>
 <body>
 
@@ -55,10 +54,12 @@
         </div>
     </div>
 
+    <!-- VENTANA EMERGENTE (MODAL) -->
     <div id="modalPuntuacion" class="cyber-modal">
         <div class="cyber-modal-content">
             <button id="btnCerrarModal" class="modal-close">&times;</button>
-            <h3 style="margin-bottom: 15px; color: #fff;">Registrar Nueva Puntuación</h3>
+            
+            <h3 style="margin-top: 0; margin-bottom: 20px; color: #fff; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px;">Registrar Nueva Puntuación</h3>
             
             <form id="formPuntuacion">
                 <div class="modal-form-group">
@@ -75,18 +76,19 @@
                     </select>
                 </div>
 
-                <div class="modal-form-group" style="margin-bottom: 15px;">
+                <div class="modal-form-group" style="margin-bottom: 20px;">
                     <label for="valorPuntuacion">Puntuación</label>
                     <input type="number" id="valorPuntuacion" name="puntuacion" min="0" required placeholder="Ej. 1500">
                 </div>
 
-                <div id="mensajePuntuacion" class="form-message" style="display: none; margin-bottom: 10px; font-size: 0.85rem;"></div>
+                <div id="mensajePuntuacion" class="form-message" style="display: none; margin-bottom: 15px; font-size: 0.85rem;"></div>
 
-                <button type="submit" class="btn-abrir-modal" style="width: 100%; padding: 12px; margin-top: 5px;">Guardar Puntuación</button>
+                <button type="submit" class="btn-abrir-modal" style="width: 100%; padding: 12px; cursor: pointer;">Guardar Puntuación</button>
             </form>
         </div>
     </div>
 
+    <!-- SCRIPTS (DEBEN IR DESPUÉS DE LOS ELEMENTOS HTML QUE MANIPULAN) -->
     <script src="../js/main.js"></script>
     <script src="../js/ranking.js"></script>
     <script>
