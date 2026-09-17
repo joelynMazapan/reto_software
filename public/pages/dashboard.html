@@ -5,9 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Command Center</title>
     <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 <body>
+    
+    <!-- Navbar integrado directamente -->
+    <nav class="cyber-navbar">
+        <a href="dashboard.html" class="navbar-brand">Torneo<span>X</span></a>
+        
+        <ul class="navbar-links">
+            <li><a href="dashboard.html" class="active">Dashboard</a></li>
+            <li><a href="registros.html">Registros</a></li>
+            <li><a href="ranking.html">Clasificación</a></li>
+        </ul>
+
+        <div class="navbar-search">
+            <input type="text" id="inputBuscarJugador" placeholder="Buscar jugador...">
+        </div>
+
+        <button id="btnCerrarSesion" class="btn-logout">Salir</button>
+    </nav>
 
     <div class="registro-container command-container">
         <div class="command-header">
@@ -36,13 +54,15 @@
                 <div class="bento-label">Puntuación Promedio Global</div>
                 <div class="bento-value" id="promedioPuntuacion">--</div>
             </div>
-            
-        </div>
-        <div class="command-footer">
-            <a href="login.html" class="btn-cyber-outline">Cerrar Sesión</a>
         </div>
     </div>
 
+    <!-- Script para el botón de cerrar sesión del navbar -->
+    <script>
+        document.getElementById("btnCerrarSesion").addEventListener("click", () => {
+            window.location.href = "../index.html";
+        });
+    </script>
     <script src="../js/dashboard.js"></script>
 </body>
 </html>
