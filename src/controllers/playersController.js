@@ -81,4 +81,34 @@ const searchPlayers = async (req, res) => {
     }
 };
 
-module.exports = { createPlayer, getPlayers, searchPlayers };
+const getPlayerById = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+
+        const query = `
+            SELECT 
+                idJugador, 
+                Nombre, 
+                Gamertag, 
+                Correo, 
+                fechaRegistro 
+            FROM Jugador 
+            WHERE idJugador = ?
+        `;
+
+        const [rows] = await db.query(query, [id]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ msg: 'Jugador no encontrado.' });
+        }
+
+        res.json(rows[0]);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al buscar el jugador por ID' });
+    }
+};
+
+module.exports = { createPlayer, getPlayers, searchPlayers, getPlayerById };
