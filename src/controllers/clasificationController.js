@@ -10,7 +10,7 @@ const getClasification = async (req, res) => {
             FROM Puntuacion p
                JOIN Jugador u ON p.fkJugador = u.idJugador
                JOIN VideoJuego v ON p.fkVideoJuego = v.idVideoJuego
-            ORDER BY p.Puntos DESC
+            ORDER BY p. Puntuacion DESC
         `;
         
         const [clasificacion] = await db.query(query);
