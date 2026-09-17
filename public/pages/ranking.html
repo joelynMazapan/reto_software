@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasificación - Sistema de Torneos</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/ranking.css">
+</head>
+<body>
+
+    <div class="registro-container ranking-container">
+        <div class="ranking-header">
+            <div class="ranking-title">
+                <h2>TABLA DE <span>CLASIFICACIÓN</span></h2>
+                <p>Ranking de los mejores jugadores y puntuaciones</p>
+            </div>
+        </div>
+
+        <!-- Contenedor de la Tabla Estilizada -->
+        <div class="leaderboard-card">
+            <table class="cyber-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Rank</th>
+                        <th>Jugador</th>
+                        <th>Videojuego</th>
+                        <th style="text-align: right;">Puntuación</th>
+                    </tr>
+                </thead>
+                <tbody id="rankingTableBody">
+                    <tr>
+                        <td colspan="4" class="empty-state">Cargando clasificación desde el servidor...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../js/ranking.js"></script>
+</body>
+</html>
