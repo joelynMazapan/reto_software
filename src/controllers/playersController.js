@@ -92,7 +92,7 @@ const getPlayerById = async (req, res) => {
                 Nombre, 
                 Gamertag, 
                 Correo, 
-                fechaRegistro 
+                FechaRegistro 
             FROM Jugador 
             WHERE idJugador = ?
         `;
