@@ -152,7 +152,6 @@ const deletePlayer = async (req, res) => {
 
         const [result] = await db.query('DELETE FROM Jugador WHERE idJugador = ?', [id]);
 
-        // Si affectedRows es 0, el jugador no existía
         if (result.affectedRows === 0) {
             return res.status(404).json({ msg: 'Jugador no encontrado.' });
         }
