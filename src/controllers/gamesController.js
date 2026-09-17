@@ -37,4 +37,14 @@ const createGame = async (req, res) => {
     }
 }
 
-module.exports = { createGame };
+const getGames = async (req, res) => {
+    try {
+        const [games] = await db.query('SELECT * FROM VideoJuego'); 
+        res.json(games);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener los datos' });
+    }
+};
+
+module.exports = { createGame , getGames };
