@@ -10,7 +10,6 @@
 </head>
 <body>
 
-    <!-- Navbar integrado directamente -->
     <nav class="cyber-navbar">
         <a href="dashboard.html" class="navbar-brand">Torneo<span>X</span></a>
         
@@ -21,7 +20,8 @@
         </ul>
 
         <div class="navbar-search">
-            <input type="text" id="inputBuscarJugador" placeholder="Buscar jugador...">
+            <input type="text" id="inputBuscarJugador" placeholder="Buscar jugador..." autocomplete="off">
+            <div id="searchResultsDropdown" class="search-dropdown" style="display: none;"></div>
         </div>
 
         <button id="btnCerrarSesion" class="btn-logout">Salir</button>
@@ -41,11 +41,11 @@
                     <form id="formVideojuego">
                         <div class="form-group" style="margin-bottom: 12px;">
                             <label for="nombreVideojuego">Nombre del Videojuego</label>
-                            <input type="text" id="nombreVideojuego" name="nombre" placeholder="Ej. Cyberpunk Arena" required>
+                            <input type="text" id="nombreVideojuego" name="nombre" required>
                         </div>
                         <div class="form-group" style="margin-bottom: 12px;">
                             <label for="generoVideojuego">Género</label>
-                            <input type="text" id="generoVideojuego" name="genero" placeholder="Ej. Shooter / Acción" required>
+                            <input type="text" id="generoVideojuego" name="genero" required>
                         </div>
 
                         <div id="mensajeVideojuego" class="form-message" style="display: none;"></div>
@@ -75,7 +75,7 @@
 
                         <div class="form-group" style="margin-bottom: 10px;">
                             <label for="valorPuntuacion">Puntuación</label>
-                            <input type="number" id="valorPuntuacion" name="puntuacion" placeholder="Ej. 9500" required>
+                            <input type="number" id="valorPuntuacion" name="puntuacion" min="0" required>
                         </div>
 
                         <div id="mensajePuntuacion" class="form-message" style="display: none;"></div>
@@ -87,12 +87,7 @@
         </div>
     </div>
 
-    <!-- Script para el botón de cerrar sesión del navbar -->
-    <script>
-        document.getElementById("btnCerrarSesion").addEventListener("click", () => {
-            window.location.href = "../index.html";
-        });
-    </script>
+    <script src="../js/main.js"></script>
     <script src="../js/registros.js"></script>
 </body>
 </html>

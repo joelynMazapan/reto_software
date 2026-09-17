@@ -10,7 +10,6 @@
 </head>
 <body>
 
-    <!-- Navbar integrado directamente -->
     <nav class="cyber-navbar">
         <a href="dashboard.html" class="navbar-brand">Torneo<span>X</span></a>
         
@@ -21,7 +20,8 @@
         </ul>
 
         <div class="navbar-search">
-            <input type="text" id="inputBuscarJugador" placeholder="Buscar jugador...">
+            <input type="text" id="inputBuscarJugador" placeholder="Buscar jugador..." autocomplete="off">
+            <div id="searchResultsDropdown" class="search-dropdown" style="display: none;"></div>
         </div>
 
         <button id="btnCerrarSesion" class="btn-logout">Salir</button>
@@ -53,12 +53,7 @@
         </div>
     </div>
 
-    <!-- Script para el botón de cerrar sesión del navbar -->
-    <script>
-        document.getElementById("btnCerrarSesion").addEventListener("click", () => {
-            window.location.href = "../index.html";
-        });
-    </script>
+    <script src="../js/main.js"></script>
     <script src="../js/ranking.js"></script>
 </body>
 </html>
