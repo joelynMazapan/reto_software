@@ -2,16 +2,16 @@ const db = require('../config/database');
 
 const createPlayer = async (req, res) => {
     try {
-        const { name, gamerTag, email, password } = req.body;
+        const { name, gamerTag, email } = req.body;
 
-        if (!name || !gamerTag || !email || !password) {
+        if (!name || !gamerTag || !email) {
             return res.status(400).json({ 
-                msg: 'Todos los campos (name, gamerTag, email, password) son obligatorios.' 
+                msg: 'Todos los campos (name, gamerTag, email) son obligatorios.' 
             });
         }
 
         const [rows] = await db.query(
-            'SELECT * FROM Usuario WHERE GamerTag = ? OR Correo = ?', 
+            'SELECT * FROM Jugador WHERE GamerTag = ? OR Correo = ?', 
             [gamerTag, email]
         );
 
@@ -22,8 +22,8 @@ const createPlayer = async (req, res) => {
         }
 
         const [result] = await db.query(
-            'INSERT INTO Usuario (Nombre, GamerTag, Correo, Contraseña) VALUES (?, ?, ?, ?)',
-            [name, gamerTag, email, password]
+            'INSERT INTO Jugador (Nombre, GamerTag, Correo) VALUES (?, ?, ?)',
+            [name, gamerTag, email]
         );
 
         res.status(201).json({
@@ -39,7 +39,7 @@ const createPlayer = async (req, res) => {
 
 const getPlayers = async (req, res ) => {
     try {
-        const [players] = await db.query('SELECT * FROM Usuario');
+        const [players] = await db.query('SELECT * FROM Jugador');
         res.json(players);
     } catch (error){
         console.error(error);
