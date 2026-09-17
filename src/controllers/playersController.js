@@ -111,4 +111,39 @@ const getPlayerById = async (req, res) => {
     }
 };
 
-module.exports = { createPlayer, getPlayers, searchPlayers, getPlayerById };
+const updatePlayer = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const { nombre, gamerTag, correo } = req.body;
+
+        if (!nombre || !gamerTag || !correo) {
+            return res.status(400).json({ 
+                msg: 'Los campos nombre, gamerTag y correo son obligatorios para actualizar.' 
+            });
+        }
+
+        const query = `
+            UPDATE Jugador 
+            SET Nombre = ?, Gamertag = ?, Correo = ? 
+            WHERE idJugador = ?
+        `;
+        
+        const [result] = await db.query(query, [nombre, gamerTag, correo, id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ msg: 'Jugador no encontrado o no existe.' });
+        }
+
+        res.json({ 
+            msg: 'Jugador actualizado exitosamente',
+            idJugador: id
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Fallo al actualizar el jugador' });
+    }
+};
+
+module.exports = { createPlayer, getPlayers, searchPlayers, getPlayerById , updatePlayer};
