@@ -64,4 +64,28 @@ const getGameById = async (req, res) => {
         res.status(500).json({ error: 'Error al obtener los datos' });
     }
 };
-module.exports = { createGame , getGames, getGameById };
+
+const updateGame = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, genre } = req.body; 
+
+        if (!name || !genre) {
+            return res.status(400).json({ msg: 'El nombre y el género son obligatorios.' });
+        }
+
+        const query = 'UPDATE VideoJuego SET Nombre = ?, Genero = ? WHERE idVideoJuego = ?';
+        const [result] = await db.query(query, [name, genre, id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ msg: 'Videojuego no encontrado.' });
+        }
+
+        res.json({ msg: 'Videojuego actualizado exitosamente', idVideoJuego: id });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Fallo al actualizar el videojuego' });
+    }
+};
+module.exports = { createGame , getGames, getGameById, updateGame };
