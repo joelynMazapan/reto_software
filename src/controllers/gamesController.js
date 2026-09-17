@@ -11,7 +11,7 @@ const createGame = async (req, res) => {
         }
 
         const [rows] = await db.query(
-            'SELECT * FROM Videojuego WHERE Nombre = ?', 
+            'SELECT * FROM VideoJuego WHERE Nombre = ?', 
             [name]
         );
 
@@ -22,7 +22,7 @@ const createGame = async (req, res) => {
         }
 
         const [result] = await db.query(
-            'INSERT INTO Videojuego (Nombre, Genero) VALUES (?, ?)',
+            'INSERT INTO VideoJuego (Nombre, Genero) VALUES (?, ?)',
             [name, genre]
         );
 
