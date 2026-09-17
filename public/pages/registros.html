@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros - Sistema de Torneos</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/registros.css">
+</head>
+<body>
+
+    <div class="registro-container registros-container">
+        <div class="registros-header">
+            <h2>PANEL DE <span>REGISTROS</span></h2>
+            <p>Dar de alta nuevos videojuegos y registrar puntuaciones en el sistema</p>
+        </div>
+
+        <div class="forms-grid">
+            
+            <div class="form-card">
+                <div>
+                    <h3 style="margin-bottom: 15px;">Nuevo Videojuego</h3>
+                    <form id="formVideojuego">
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label for="nombreVideojuego">Nombre del Videojuego</label>
+                            <input type="text" id="nombreVideojuego" name="nombre" placeholder="Ej. Cyberpunk Arena" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label for="generoVideojuego">Género</label>
+                            <input type="text" id="generoVideojuego" name="genero" placeholder="Ej. Shooter / Acción" required>
+                        </div>
+
+                        <div id="mensajeVideojuego" class="form-message" style="display: none;"></div>
+                    </form>
+                </div>
+                <button type="submit" form="formVideojuego" class="btn-cyber">Registrar Videojuego</button>
+            </div>
+
+            <div class="form-card">
+                <div>
+                    <h3 style="margin-bottom: 15px;">Nueva Puntuación</h3>
+                    <form id="formPuntuacion">
+                        <div class="selects-row-grid" style="margin-bottom: 10px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="selectJugador">Jugador</label>
+                                <select id="selectJugador" name="jugador_id" required>
+                                    <option value="" disabled selected>Seleccione...</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="selectVideojuego">Videojuego</label>
+                                <select id="selectVideojuego" name="videojuego_id" required>
+                                    <option value="" disabled selected>Seleccione...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label for="valorPuntuacion">Puntuación</label>
+                            <input type="number" id="valorPuntuacion" name="puntuacion" placeholder="Ej. 9500" required>
+                        </div>
+
+                        <div id="mensajePuntuacion" class="form-message" style="display: none;"></div>
+                    </form>
+                </div>
+                <button type="submit" form="formPuntuacion" class="btn-cyber">Guardar Puntuación</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="../js/registros.js"></script>
+</body>
+</html>

@@ -27,7 +27,6 @@
     margin-top: 4px;
 }
 
-/* Estilo de la Tabla / Leaderboard */
 .leaderboard-card {
     background: rgba(15, 23, 42, 0.6);
     border: 1px solid var(--input-border);
