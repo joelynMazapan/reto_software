@@ -8,6 +8,7 @@ const pingRoutes = require('./routes/pingRoutes');
 const playerRoutes = require('./routes/players')
 const gameRoutes = require('./routes/games')
 const puntuationRoutes = require('./routes/puntuation')
+const clasificationRoutes = require('./routes/clasification')
 
 // Inicializando Express
 const app = express();
@@ -23,6 +24,7 @@ app.use('/', pingRoutes);
 app.use('/players',playerRoutes);
 app.use('/games',gameRoutes);
 app.use('/puntuation',puntuationRoutes);
+app.use('/clasification',clasificationRoutes);
 
 // Arramnque del servidor
 app.listen(PORT, () => {
