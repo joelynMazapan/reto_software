@@ -146,4 +146,29 @@ const updatePlayer = async (req, res) => {
     }
 };
 
-module.exports = { createPlayer, getPlayers, searchPlayers, getPlayerById , updatePlayer};
+const deletePlayer = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const [result] = await db.query('DELETE FROM Jugador WHERE idJugador = ?', [id]);
+
+        // Si affectedRows es 0, el jugador no existía
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ msg: 'Jugador no encontrado.' });
+        }
+
+        res.json({ msg: 'Jugador eliminado exitosamente' });
+
+    } catch (error) {
+        console.error(error);
+        
+        if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+            return res.status(400).json({ 
+                error: 'No se puede eliminar este jugador porque tiene puntuaciones registradas en el sistema.' 
+            });
+        }
+
+        res.status(500).json({ error: 'Fallo al eliminar el jugador' });
+    }
+};
+module.exports = { createPlayer, getPlayers, searchPlayers, getPlayerById , updatePlayer , deletePlayer};
