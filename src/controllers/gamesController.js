@@ -88,4 +88,30 @@ const updateGame = async (req, res) => {
         res.status(500).json({ error: 'Fallo al actualizar el videojuego' });
     }
 };
-module.exports = { createGame , getGames, getGameById, updateGame };
+
+const deleteGame = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const [result] = await db.query('DELETE FROM VideoJuego WHERE idVideoJuego = ?', [id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ msg: 'Videojuego no encontrado.' });
+        }
+
+        res.json({ msg: 'Videojuego eliminado exitosamente' });
+
+    } catch (error) {
+        console.error(error);
+        
+        // Protección si el juego ya tiene puntuaciones
+        if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+            return res.status(400).json({ 
+                error: 'No se puede eliminar este videojuego porque tiene puntuaciones registradas.' 
+            });
+        }
+
+        res.status(500).json({ error: 'Fallo al eliminar el videojuego' });
+    }
+};
+module.exports = { createGame , getGames, getGameById, updateGame, deleteGame };
