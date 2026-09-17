@@ -27,7 +27,6 @@ body {
     justify-content: center;
     align-items: center;
     background-color: var(--bg-color);
-    /* Fondo abstracto con gradientes radiales */
     background-image: 
         radial-gradient(circle at 15% 20%, rgba(114, 9, 183, 0.35) 0%, transparent 40%),
         radial-gradient(circle at 85% 80%, rgba(76, 201, 240, 0.25) 0%, transparent 40%);
@@ -63,20 +62,6 @@ body {
 .registro-header {
     text-align: center;
     margin-bottom: 30px;
-}
-
-.registro-header h2 {
-    font-size: 1.6rem;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    color: var(--text-color);
-    text-transform: uppercase;
-}
-
-.registro-header h2 span {
-    background: linear-gradient(135deg, var(--primary-light), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 form {
