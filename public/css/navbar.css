@@ -1,0 +1,112 @@
+.cyber-navbar {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.9);
+    border-bottom: 1px solid var(--input-border);
+    backdrop-filter: blur(12px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.navbar-brand {
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: var(--text-color);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar-brand span {
+    color: var(--accent);
+}
+
+.navbar-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.2s ease;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(76, 201, 240, 0.4);
+}
+
+.navbar-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-search input {
+    background: rgba(10, 15, 30, 0.8);
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    padding: 7px 12px;
+    color: var(--text-color);
+    font-size: 0.8rem;
+    outline: none;
+    width: 200px;
+    transition: all 0.2s ease;
+}
+
+.navbar-search input:focus {
+    width: 250px;
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(76, 201, 240, 0.2);
+}
+
+.btn-logout {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    color: #ff6b6b;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-logout:hover {
+    background: rgba(255, 107, 107, 0.2);
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
+}
+
+@media (max-width: 900px) {
+    .cyber-navbar {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+    }
+    .navbar-search input {
+        width: 100%;
+    }
+}
