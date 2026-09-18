@@ -1,5 +1,7 @@
 const db = require('../config/database');
 
+const db = require('../config/database');
+
 const createPlayer = async (req, res) => {
     try {
         const { name, gamerTag, email } = req.body;
@@ -10,9 +12,33 @@ const createPlayer = async (req, res) => {
             });
         }
 
+        const cleanName = name.trim();
+        const cleanGamerTag = gamerTag.trim();
+        const cleanEmail = email.trim();
+
+        const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+        if (!nameRegex.test(cleanName)) {
+            return res.status(400).json({ 
+                msg: 'El nombre solo puede contener letras y espacios.' 
+            });
+        }
+
+        if (cleanGamerTag.length < 3 || cleanGamerTag.length > 20) {
+            return res.status(400).json({ 
+                msg: 'El gamerTag debe tener entre 3 y 20 caracteres.' 
+            });
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(cleanEmail)) {
+            return res.status(400).json({ 
+                msg: 'El formato del correo electrónico no es válido.' 
+            });
+        }
+
         const [rows] = await db.query(
             'SELECT * FROM Jugador WHERE GamerTag = ? OR Correo = ?', 
-            [gamerTag, email]
+            [cleanGamerTag, cleanEmail]
         );
 
         if (rows.length > 0) {
@@ -23,7 +49,7 @@ const createPlayer = async (req, res) => {
 
         const [result] = await db.query(
             'INSERT INTO Jugador (Nombre, GamerTag, Correo) VALUES (?, ?, ?)',
-            [name, gamerTag, email]
+            [cleanName, cleanGamerTag, cleanEmail]
         );
 
         res.status(201).json({
