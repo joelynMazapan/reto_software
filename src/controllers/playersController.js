@@ -1,14 +1,17 @@
 const db = require('../config/database');
 
-const db = require('../config/database');
+const palabrasProhibidas = ['puto', 'mierda', 'pendejo', 'cabron', 'verga', 'chinga', 'idiota'];
 
 const createPlayer = async (req, res) => {
     try {
         const { name, gamerTag, email } = req.body;
 
-        if (!name || !gamerTag || !email) {
+        if (!name || !gamerTag || !email || 
+            typeof name !== 'string' || 
+            typeof gamerTag !== 'string' || 
+            typeof email !== 'string') {
             return res.status(400).json({ 
-                msg: 'Todos los campos (name, gamerTag, email) son obligatorios.' 
+                msg: 'Datos inválidos. Todos los campos son obligatorios y deben ser texto.' 
             });
         }
 
@@ -16,24 +19,33 @@ const createPlayer = async (req, res) => {
         const cleanGamerTag = gamerTag.trim();
         const cleanEmail = email.trim();
 
-        const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
-        if (!nameRegex.test(cleanName)) {
+        if (cleanName.length < 2 || cleanName.length > 50) {
+            return res.status(400).json({ msg: 'El nombre debe tener entre 2 y 50 caracteres.' });
+        }
+        if (cleanGamerTag.length < 3 || cleanGamerTag.length > 20) {
+            return res.status(400).json({ msg: 'El gamerTag debe tener entre 3 y 20 caracteres.' });
+        }
+        if (cleanEmail.length > 100) {
+            return res.status(400).json({ msg: 'El correo excede el límite permitido (100 caracteres).' });
+        }
+
+        const tagMinusculas = cleanGamerTag.toLowerCase();
+        const contieneGroseria = palabrasProhibidas.some(malaPalabra => tagMinusculas.includes(malaPalabra));
+        
+        if (contieneGroseria) {
             return res.status(400).json({ 
-                msg: 'El nombre solo puede contener letras y espacios.' 
+                msg: 'El gamerTag contiene lenguaje inapropiado y viola las normas de la comunidad.' 
             });
         }
 
-        if (cleanGamerTag.length < 3 || cleanGamerTag.length > 20) {
-            return res.status(400).json({ 
-                msg: 'El gamerTag debe tener entre 3 y 20 caracteres.' 
-            });
+        const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+        if (!nameRegex.test(cleanName)) {
+            return res.status(400).json({ msg: 'El nombre solo puede contener letras y espacios.' });
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(cleanEmail)) {
-            return res.status(400).json({ 
-                msg: 'El formato del correo electrónico no es válido.' 
-            });
+            return res.status(400).json({ msg: 'El formato del correo electrónico no es válido.' });
         }
 
         const [rows] = await db.query(
