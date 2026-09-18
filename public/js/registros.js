@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!tablaVideojuegosBody) return;
 
         try {
-            const res = await fetch(`${API_URL}/videojuegos`);
+            const res = await fetch(`${API_URL}/games`);
             if (!res.ok) throw new Error("No se pudo obtener el catálogo de videojuegos");
 
             const videojuegos = await res.json();
@@ -33,9 +33,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             videojuegos.forEach(v => {
                 const fila = document.createElement("tr");
+                const idJuego = v.idVideoJuego || v.idVideojuego || v.id;
                 fila.style.borderBottom = "1px solid rgba(56, 189, 248, 0.1)";
                 fila.innerHTML = `
-                    <td style="padding: 12px; color: #cbd5e1;">#${v.idVideojuego}</td>
+                    <td style="padding: 12px; color: #cbd5e1;">#${idJuego}</td>
                     <td style="padding: 12px; color: #fff; font-weight: 500;">${v.Nombre}</td>
                     <td style="padding: 12px; color: #38bdf8;">${v.Genero}</td>
                 `;
@@ -52,20 +53,48 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (formVideojuego) {
         formVideojuego.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const nombreInput = document.getElementById("nombreVideojuego").value.trim();
-            const generoInput = document.getElementById("generoVideojuego").value.trim();
+            const nombreInputEl = document.getElementById("nombreVideojuego");
+            const generoInputEl = document.getElementById("generoVideojuego");
+            const nombreInput = nombreInputEl.value.trim();
+            const generoInput = generoInputEl.value.trim();
 
             if (!nombreInput || !generoInput) {
                 mostrarMensaje("Por favor, completa todos los campos.", "error");
                 return;
             }
 
+            if (nombreInput.length < 2 || nombreInput.length > 80) {
+                mostrarMensaje("El nombre del videojuego debe tener entre 2 y 80 caracteres.", "error");
+                nombreInputEl.focus();
+                return;
+            }
+
+            if (!/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s\-]+$/.test(nombreInput)) {
+                mostrarMensaje("El nombre del videojuego solo puede tener letras, números, espacios y guiones.", "error");
+                nombreInputEl.focus();
+                return;
+            }
+
+            if (generoInput.length < 2 || generoInput.length > 40) {
+                mostrarMensaje("El género debe tener entre 2 y 40 caracteres.", "error");
+                generoInputEl.focus();
+                return;
+            }
+
+            if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(generoInput)) {
+                mostrarMensaje("El género solo debe contener letras y espacios.", "error");
+                generoInputEl.focus();
+                return;
+            }
+
             try {
-                const res = await fetch(`${API_URL}/videojuegos`, {
+                const res = await fetch(`${API_URL}/games`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ nombre: nombreInput, genero: generoInput })
+                    body: JSON.stringify({ name: nombreInput, genre: generoInput })
                 });
+
+                const data = await res.json().catch(() => ({}));
 
                 if (res.ok) {
                     mostrarMensaje("¡Videojuego registrado con éxito!", "exito");
@@ -76,12 +105,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                     setTimeout(() => {
                         if (modalVideojuego) {
                             modalVideojuego.style.display = "none";
-                            mensajeVideojuego.style.display = "none";
+                            if (mensajeVideojuego) mensajeVideojuego.style.display = "none";
                         }
                     }, 1200);
 
                 } else {
-                    mostrarMensaje("Error: El videojuego ya existe o los datos son inválidos.", "error");
+                    mostrarMensaje(data.msg || data.error || "Error: El videojuego ya existe o los datos son inválidos.", "error");
                 }
             } catch (err) {
                 console.error("Error de red:", err);
