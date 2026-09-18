@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!tbody) return;
 
         try {
-            const response = await fetch(`${API_URL}/ranking`);
+            const response = await fetch(`${API_URL}/clasification`);
             if (!response.ok) throw new Error("Error al obtener el ranking");
-            
+
             const ranking = await response.json();
             tbody.innerHTML = "";
 
@@ -33,12 +33,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             ranking.forEach((item, index) => {
+                const jugador = item.JUGADOR || item.Gamertag || item.GamerTag || "Jugador";
+                const videojuego = item.VIDEOJUEGO || item.Videojuego || item.Nombre || "Videojuego";
+                const puntuacion = item.PUNTUACIÓN ?? item.Puntuacion ?? item.puntuacion ?? 0;
+
                 tbody.innerHTML += `
                     <tr style="border-bottom: 1px solid rgba(56, 189, 248, 0.1);">
                         <td style="padding: 12px;"><strong>#${index + 1}</strong></td>
-                        <td style="padding: 12px; color: #fff; font-weight: 500;">${item.Gamertag || item.Nombre}</td>
-                        <td style="padding: 12px; color: #38bdf8;">${item.Videojuego}</td>
-                        <td style="padding: 12px; text-align: right; font-weight: bold; color: #4ade80;">${item.Puntuacion}</td>
+                        <td style="padding: 12px; color: #fff; font-weight: 500;">${jugador}</td>
+                        <td style="padding: 12px; color: #38bdf8;">${videojuego}</td>
+                        <td style="padding: 12px; text-align: right; font-weight: bold; color: #4ade80;">${puntuacion}</td>
                     </tr>
                 `;
             });
@@ -50,8 +54,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function cargarSelects() {
         try {
             const [resJ, resV] = await Promise.all([
-                fetch(`${API_URL}/jugadores`),
-                fetch(`${API_URL}/videojuegos`)
+                fetch(`${API_URL}/players`),
+                fetch(`${API_URL}/games`)
             ]);
 
             const jugadores = await resJ.json();
@@ -60,14 +64,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (selectJugador) {
                 selectJugador.innerHTML = `<option value="" disabled selected>Seleccione un jugador...</option>`;
                 jugadores.forEach(j => {
-                    selectJugador.innerHTML += `<option value="${j.idJugador}">${j.Gamertag} (${j.Nombre})</option>`;
+                    const idJugador = j.idUsuario ?? j.idJugador ?? j.id;
+                    const gamer = j.Gamertag || j.GamerTag || "Jugador";
+                    const nombre = j.Nombre || "";
+                    selectJugador.innerHTML += `<option value="${idJugador}">${gamer}${nombre ? ` (${nombre})` : ""}</option>`;
                 });
             }
 
             if (selectVideojuego) {
                 selectVideojuego.innerHTML = `<option value="" disabled selected>Seleccione un videojuego...</option>`;
                 videojuegos.forEach(v => {
-                    selectVideojuego.innerHTML += `<option value="${v.idVideojuego}">${v.Nombre}</option>`;
+                    const idVideojuego = v.idVideoJuego || v.idVideojuego || v.id;
+                    selectVideojuego.innerHTML += `<option value="${idVideojuego}">${v.Nombre}</option>`;
                 });
             }
         } catch (error) {
@@ -81,37 +89,49 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (formPuntuacion) {
         formPuntuacion.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const jugador_id = document.getElementById("selectJugador").value;
-            const videojuego_id = document.getElementById("selectVideojuego").value;
-            const puntuacion = document.getElementById("valorPuntuacion").value;
+            const jugadorSelect = document.getElementById("selectJugador");
+            const videojuegoSelect = document.getElementById("selectVideojuego");
+            const puntuacionInput = document.getElementById("valorPuntuacion");
+            const jugador_id = jugadorSelect.value;
+            const videojuego_id = videojuegoSelect.value;
+            const puntuacion = puntuacionInput.value.trim();
 
             if (!jugador_id || !videojuego_id || puntuacion === "") {
                 mostrarMensaje("Por favor, completa todos los campos.", "error");
                 return;
             }
 
+            const valorPuntuacion = Number(puntuacion);
+            if (!Number.isFinite(valorPuntuacion) || valorPuntuacion < 0 || valorPuntuacion > 1000000) {
+                mostrarMensaje("La puntuación debe ser un número válido entre 0 y 1,000,000.", "error");
+                puntuacionInput.focus();
+                return;
+            }
+
             try {
-                const res = await fetch(`${API_URL}/puntuaciones`, {
+                const res = await fetch(`${API_URL}/puntuation`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ jugador_id, videojuego_id, puntuacion })
+                    body: JSON.stringify({ fkJugador: Number(jugador_id), fkVideoJuego: Number(videojuego_id), puntos: valorPuntuacion })
                 });
+
+                const data = await res.json().catch(() => ({}));
 
                 if (res.ok) {
                     mostrarMensaje("¡Puntuación guardada correctamente!", "exito");
                     formPuntuacion.reset();
-                    
+
                     await cargarRanking();
 
                     setTimeout(() => {
                         if (modalPuntuacion) {
                             modalPuntuacion.style.display = "none";
-                            mensajePuntuacion.style.display = "none";
+                            if (mensajePuntuacion) mensajePuntuacion.style.display = "none";
                         }
                     }, 1200);
 
                 } else {
-                    mostrarMensaje("Error: La puntuación no puede ser negativa y los datos deben existir.", "error");
+                    mostrarMensaje(data.msg || data.error || "Error: La puntuación no puede ser negativa y los datos deben existir.", "error");
                 }
             } catch (err) {
                 console.error("Error de red:", err);
