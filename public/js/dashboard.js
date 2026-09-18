@@ -4,13 +4,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!response.ok) throw new Error("No se pudieron obtener las estadísticas");
         
         const stats = await response.json();
+        const totalJugadores = stats.total_jugadores ?? 0;
+        const totalVideojuegos = stats.total_videojuegos ?? 0;
+        const totalPuntuaciones = stats.total_puntuaciones ?? 0;
+        const promedio = stats.promedio_puntuacion ?? stats.puntuacion_promedio ?? 0;
 
-        // Asegúrate de que estos IDs existan en tu HTML del dashboard
-        document.getElementById("totalJugadores").textContent = stats.total_jugadores || 0;
-        document.getElementById("totalVideojuegos").textContent = stats.total_videojuegos || 0;
-        document.getElementById("totalPuntuaciones").textContent = stats.total_puntuaciones || 0;
-        document.getElementById("promedioPuntuacion").textContent = stats.promedio_puntuacion ? Number(stats.promedio_puntuacion).toFixed(2) : "0";
+        document.getElementById("totalJugadores").textContent = totalJugadores;
+        document.getElementById("totalVideojuegos").textContent = totalVideojuegos;
+        document.getElementById("totalPuntuaciones").textContent = totalPuntuaciones;
+        document.getElementById("promedioPuntuacion").textContent = Number(promedio).toFixed(2);
     } catch (error) {
-        console.log("Esperando conexión con el servidor MySQL/Backend...", error);
+        console.log("Error al cargar las estadísticas:", error);
     }
 });

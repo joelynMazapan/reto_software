@@ -375,3 +375,196 @@
     border-color: #38bdf8;
     box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
 }
+
+/* ==========================================
+   CORRECCIÓN DE ESPACIADO PARA EL NAVBAR
+   ========================================== */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0b0f19; /* Fondo oscuro típico de temática gamer/cyber */
+    color: #f8fafc;
+}
+
+/* Contenedor principal de la vista de clasificación */
+.main-container, 
+.container, 
+main {
+    /* Ajusta este valor según la altura real de tu navbar superior (ej. 70px o 80px) */
+    padding-top: 90px; 
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 40px;
+    box-sizing: border-box;
+}
+
+/* ==========================================
+   ESTILOS DE LA TABLA Y ACCIONES
+   ========================================== */
+.cyber-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(56, 189, 248, 0.15);
+}
+
+.cyber-table th, 
+.cyber-table td {
+    padding: 14px 16px;
+    text-align: left;
+}
+
+.cyber-table th {
+    background-color: rgba(30, 41, 59, 0.8);
+    color: #38bdf8;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+/* Contenedor para alinear los botones en horizontal y evitar que se aplasten */
+.acciones-cell {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Botones de la tabla */
+.btn-accion-editar, 
+.btn-accion-eliminar {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap; /* Evita que el texto del botón se rompa en dos líneas */
+}
+
+.btn-accion-editar {
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+}
+
+.btn-accion-editar:hover {
+    background: rgba(56, 189, 248, 0.25);
+    color: #ffffff;
+}
+
+.btn-accion-eliminar {
+    background: rgba(248, 113, 113, 0.1);
+    border: 1px solid #f87171;
+    color: #f87171;
+}
+
+.btn-accion-eliminar:hover {
+    background: rgba(248, 113, 113, 0.25);
+    color: #ffffff;
+}
+
+/* ==========================================
+   SOLUCIÓN DEFINITIVA PARA EL NAVBAR FIJO
+   ========================================== */
+
+/* Asegura que el navbar superior se mantenga siempre arriba y no sea tapado */
+header, nav, .navbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Prioridad alta para que flote siempre sobre todo */
+}
+
+/* Espaciado superior obligatorio para que el contenido comience abajo del navbar */
+body {
+    margin: 0;
+    padding-top: 85px; /* Altura estimada de tu navbar,ajústala si es necesario (ej. 80px - 100px) */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0b0f19;
+    color: #f8fafc;
+}
+
+/* Contenedor principal de la vista */
+.main-container, 
+.container, 
+main {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto; /* Centrado automático */
+    padding-bottom: 50px;
+    box-sizing: border-box;
+}
+
+/* ==========================================
+   ESTILOS DE LA TABLA Y ACCIONES
+   ========================================== */
+.cyber-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(56, 189, 248, 0.15);
+}
+
+.cyber-table th, 
+.cyber-table td {
+    padding: 14px 16px;
+    text-align: left;
+}
+
+.cyber-table th {
+    background-color: rgba(30, 41, 59, 0.8);
+    color: #38bdf8;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+/* Contenedor para alinear los botones en horizontal y evitar que se aplasten */
+.acciones-cell {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Botones de la tabla */
+.btn-accion-editar, 
+.btn-accion-eliminar {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-accion-editar {
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+}
+
+.btn-accion-editar:hover {
+    background: rgba(56, 189, 248, 0.25);
+    color: #ffffff;
+}
+
+.btn-accion-eliminar {
+    background: rgba(248, 113, 113, 0.1);
+    border: 1px solid #f87171;
+    color: #f87171;
+}
+
+.btn-accion-eliminar:hover {
+    background: rgba(248, 113, 113, 0.25);
+    color: #ffffff;
+}

@@ -42,11 +42,12 @@
                         <th style="padding: 12px; color: #38bdf8;">ID</th>
                         <th style="padding: 12px; color: #38bdf8;">Videojuego</th>
                         <th style="padding: 12px; color: #38bdf8;">Género</th>
+                        <th style="padding: 12px; color: #38bdf8; text-align: center;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="videojuegosTableBody">
                     <tr>
-                        <td colspan="3" class="empty-state" style="text-align: center; padding: 20px; color: #94a3b8;">Cargando catálogo de videojuegos...</td>
+                        <td colspan="4" class="empty-state" style="text-align: center; padding: 20px; color: #94a3b8;">Cargando catálogo de videojuegos...</td>
                     </tr>
                 </tbody>
             </table>
@@ -59,9 +60,11 @@
             
             <button id="btnCerrarModalVideojuego" style="position: absolute; top: 15px; right: 20px; background: none; border: none; color: #94a3b8; font-size: 1.6rem; cursor: pointer; transition: color 0.2s;">&times;</button>
             
-            <h3 style="margin-top: 0; margin-bottom: 20px; color: #fff; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px;">Registrar Nuevo Videojuego</h3>
+            <h3 id="modalTituloVideojuego" style="margin-top: 0; margin-bottom: 20px; color: #fff; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px;">Registrar Nuevo Videojuego</h3>
             
             <form id="formVideojuego">
+                <input type="hidden" id="idVideojuegoEditando">
+
                 <div style="margin-bottom: 15px;">
                     <label for="nombreVideojuego" style="display: block; font-size: 0.75rem; color: #cbd5e1; margin-bottom: 6px; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Nombre del Videojuego</label>
                     <input type="text" id="nombreVideojuego" name="nombre" required placeholder="Ej. Cyberpunk 2077" style="width: 100%; padding: 10px 12px; background: rgba(30, 41, 59, 0.7); border: 1px solid #475569; border-radius: 8px; color: #fff; box-sizing: border-box; font-size: 0.9rem; outline: none;">
@@ -74,7 +77,7 @@
 
                 <div id="mensajeVideojuego" class="form-message" style="display: none; margin-bottom: 15px; font-size: 0.85rem;"></div>
 
-                <button type="submit" class="btn-cyber" style="width: 100%; padding: 12px; cursor: pointer;">Guardar Videojuego</button>
+                <button type="submit" id="btnSubmitVideojuego" class="btn-cyber" style="width: 100%; padding: 12px; cursor: pointer;">Guardar Videojuego</button>
             </form>
         </div>
     </div>
@@ -88,6 +91,13 @@
         const btnCerrarVid = document.getElementById('btnCerrarModalVideojuego');
 
         btnAbrirVid.addEventListener('click', () => {
+            document.getElementById('formVideojuego').reset();
+            document.getElementById('idVideojuegoEditando').value = '';
+            document.getElementById('modalTituloVideojuego').textContent = 'Registrar Nuevo Videojuego';
+            document.getElementById('btnSubmitVideojuego').textContent = 'Guardar Videojuego';
+            const msg = document.getElementById('mensajeVideojuego');
+            if(msg) msg.style.display = 'none';
+            
             modalVid.style.display = 'flex';
         });
 
