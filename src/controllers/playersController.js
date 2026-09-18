@@ -9,6 +9,13 @@ const createPlayer = async (req, res) => {
                 msg: 'Todos los campos (name, gamerTag, email) son obligatorios.' 
             });
         }
+        
+        const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+        if (!nameRegex.test(name)) {
+            return res.status(400).json({ 
+                msg: 'El nombre solo puede contener letras y espacios, no se permiten números ni símbolos.' 
+            });
+        }
 
         const [rows] = await db.query(
             'SELECT * FROM Jugador WHERE GamerTag = ? OR Correo = ?', 
