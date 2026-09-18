@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasificación - Sistema de Torneos</title>
+
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/ranking.css">
+</head>
+<body>
+
+    <nav class="cyber-navbar">
+        <a href="../index.html" class="navbar-brand">Torneo<span>X</span></a>
+        
+        <ul class="navbar-links">
+            <li><a href="../index.html">Dashboard</a></li>
+            <li><a href="jugadores.html">Jugadores</a></li>
+            <li><a href="registros.html">Videojuegos</a></li>
+            <li><a href="ranking.html" class="active">Clasificación</a></li>
+        </ul>
+
+        <div class="navbar-search">
+            <input type="text" id="inputBuscarJugador" placeholder="Buscar jugador..." autocomplete="off">
+            <div id="searchResultsDropdown" class="search-dropdown" style="display: none;"></div>
+        </div>
+    </nav>
+
+    <div class="registro-container ranking-container">
+        <div class="ranking-header">
+            <div class="ranking-title">
+                <h2>TABLA DE <span>CLASIFICACIÓN</span></h2>
+            </div>
+            <button id="btnAbrirModal" class="btn-abrir-modal">+ Nueva Puntuación</button>
+        </div>
+
+        <div class="leaderboard-card">
+            <table class="cyber-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Rank</th>
+                        <th>Jugador</th>
+                        <th>Videojuego</th>
+                        <th style="text-align: right;">Puntuación</th>
+                    </tr>
+                </thead>
+                <tbody id="rankingTableBody">
+                    <tr>
+                        <td colspan="4" class="empty-state">Cargando clasificación desde el servidor...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- VENTANA EMERGENTE (MODAL) -->
+    <div id="modalPuntuacion" class="cyber-modal">
+        <div class="cyber-modal-content">
+            <button id="btnCerrarModal" class="modal-close">&times;</button>
+            
+            <h3 style="margin-top: 0; margin-bottom: 20px; color: #fff; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px;">Registrar Nueva Puntuación</h3>
+            
+            <form id="formPuntuacion">
+                <div class="modal-form-group">
+                    <label for="selectJugador">Jugador</label>
+                    <select id="selectJugador" name="jugador_id" required>
+                        <option value="" disabled selected>Seleccione un jugador...</option>
+                    </select>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="selectVideojuego">Videojuego</label>
+                    <select id="selectVideojuego" name="videojuego_id" required>
+                        <option value="" disabled selected>Seleccione un videojuego...</option>
+                    </select>
+                </div>
+
+                <div class="modal-form-group" style="margin-bottom: 20px;">
+                    <label for="valorPuntuacion">Puntuación</label>
+                    <input type="number" id="valorPuntuacion" name="puntuacion" min="0" required placeholder="Ej. 1500">
+                </div>
+
+                <div id="mensajePuntuacion" class="form-message" style="display: none; margin-bottom: 15px; font-size: 0.85rem;"></div>
+
+                <button type="submit" class="btn-abrir-modal" style="width: 100%; padding: 12px; cursor: pointer;">Guardar Puntuación</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPTS (DEBEN IR DESPUÉS DE LOS ELEMENTOS HTML QUE MANIPULAN) -->
+    <script src="../js/main.js?v=20260917"></script>
+    <script src="../js/ranking.js?v=20260917"></script>
+    <script>
+        const modal = document.getElementById('modalPuntuacion');
+        const btnAbrir = document.getElementById('btnAbrirModal');
+        const btnCerrar = document.getElementById('btnCerrarModal');
+
+        btnAbrir.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+
+        btnCerrar.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
